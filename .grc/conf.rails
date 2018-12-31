@@ -1,0 +1,11 @@
+regexp=.*\(.*\)
+colours=bold black
+count=more
+=======
+regexp=:.*
+colours=black
+count=more
+=======
+regexp=\*
+colours=black
+count=more

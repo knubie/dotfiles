@@ -1,0 +1,52 @@
+# Variables
+set diff-context = 2
+
+# main view
+set main-view = date:display=relative author:abbreviated id:display=yes commit-title:graph=true,refs=yes
+#set ref:display=true
+
+# color area fg bg
+# Colors
+color cursor default 13
+color status default default
+color title-focus black default
+color title-blur black default
+color date black default
+color author white default
+#color graph-commit white default
+#color palette-0 white default
+#color palette-1 white default
+#color palette-2 white default
+#color palette-3 white default
+#color palette-4 white default
+#color palette-5 white default
+#color palette-6 white default
+#color main-head default default bold
+#color main-remote default default bold
+
+# status view
+#color status.header white default
+#color status.section default default underline
+#color stat-unstaged default default bold
+
+color diff-header black 13 #Header for file
+color diff-chunk black default #Header for chunks in file
+color "--- "      black  default
+color "+++ "      black  default
+#color diff-add default default bold
+#color diff-del white default
+
+color diff-index         black default
+#color ".|"               yellow default
+color diff-stat          black default bold
+color diff-similarity		 blue default
+#color dissimilarity			 blue default
+#color diff-tree					 blue default
+#color deleted file mode  blue default
+
+color Commit white default
+color pp-merge  white default
+color main-commit white default
+color pp-refs   white default
+
+color commit white default

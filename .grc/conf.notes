@@ -1,0 +1,24 @@
+# TODO
+regexp=TODO
+colours=white
+count=more
+======
+# HACK
+regexp=HACK
+colours=yellow
+count=more
+=====
+# FIXME
+regexp=FIXME
+colours=red
+count=more
+=====
+# Line numbers
+regexp=\s\d+$
+colours=blue
+count=more
+=====
+# Path name
+regexp=/[\w/\.]+
+colours=bold green
+count=more

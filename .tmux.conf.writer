@@ -1,0 +1,109 @@
+##################### Writer version ################
+
+# don't wait for an escape sequence after hitting
+# Esc. fixes insert mode exit lag in vim
+set -sg escape-time 0
+# Needed for pbcopy / pbpaste
+set-option -g default-command "reattach-to-user-namespace -l $SHELL"
+# Need to set $TERM for vim colors to work
+#set -g default-terminal "screen-256color-italic"
+set -g default-terminal "tmux18-256color"
+#set -g default-terminal "screen-256color"
+# remap prefix to Control + a
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+
+# Statusbar
+set -g status-interval 1
+set -g status-justify centre # center align window list
+set -g status-position bottom
+#⬢
+set -g @batt_full_charge_icon "#[fg=default,bold]━━━━#[fg=default,default]"
+set -g @batt_high_charge_icon "#[fg=default,bold]━━━#[fg=white,bold]━#[fg=default,default]"
+set -g @batt_medium_charge_icon "#[fg=default,bold]━━#[fg=white,bold]━━#[fg=default,default]"
+set -g @batt_low_charge_icon "#[fg=red,bold]━#[fg=white,bold]━━━#[fg=default,default]"
+set -g @batt_attached_icon "#[fg=default,bold]#[fg=default,default]"
+set -g @batt_charging_icon "#[fg=default,bold]⚡#[fg=default,default]"
+set -g @batt_charged_icon "#[fg=blue,bold]━━━━#[fg=default,default]"
+set -g status-left ''
+set -g status-right '#{battery_percentage} #{battery_icon}  #[fg=white]//#[fg=default]  %a %H:%M  #([ -e ~/Code/cmn-admin/tmp/pids/server.pid ] && echo "#[fg=red,bold] " || echo "#[fg=white,bold] ")'
+#set -g status-left '#[fg=brightwhite]  #S - #(pwd) #[fg=brightgreen] #(wemux status_users)'
+set -g status-left-length 100
+
+# default statusbar colors
+set -g status-fg default
+set -g status-bg default
+set -g status-attr dim
+
+# default window title colors
+set-window-option -g window-status-fg white
+set-window-option -g window-status-bg default
+set-window-option -g window-status-attr dim
+
+# active window title colors
+set-window-option -g window-status-current-fg black
+set-window-option -g window-status-current-bg default
+set-window-option -g window-status-current-attr bright
+
+# Set pane divider colors
+set -g pane-border-bg default
+set -g pane-border-fg white
+set -g pane-active-border-bg default
+set -g pane-active-border-fg white
+
+# window formats
+set -g window-status-format " #W "
+set -g window-status-fg white
+set -g window-status-current-format " #W "
+set -g window-status-current-fg black
+set-window-option -g window-status-separator ""
+# this must be some glitch in tmux 1.8, bg and fg are swapped
+set -g window-status-activity-bg blue
+set -g window-status-activity-fg brightyellow
+set -g window-status-bell-bg blue
+set -g window-status-bell-fg brightyellow
+#set -g window-status-content-bg blue
+#set -g window-status-content-fg yellow
+
+# start windows at 1
+set -g base-index 1
+set-window-option -g automatic-rename off
+
+# pane switching
+unbind ^B
+bind ^B select-pane -t :.+
+bind | split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
+
+# smart pane switching with awareness of vim splits
+bind -n C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+bind -n C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+bind -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+bind -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+bind -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
+
+# Update the status bar with CWD and git info by running a shell script
+# Requires Thomas Adam's hook patch for tmux
+# https://github.com/ThomasAdam/tmux/tree/ta/hooks
+#set-hook -g -n 'after-select-window' 'run "cd `tmux show-environment TMUXPWD_#I | sed \"s/^.*=//\"`; tmux_set_status.sh"'
+#set-hook -g -n 'after-select-window' 'run "tmux set -q status-left \" `tmux show-environment TMUX_STATUS_#S_#I | cut -d \" \" -f 2-`\""'
+#set-hook -g -n 'after-select-window' 'run "tmux set -q status-left \" $(tmux show-environment TMUX_STATUS_#S_#I | cut -d \" \" -f 2-)\""'
+
+# force a reload of the config file
+unbind r
+bind r source-file ~/.tmux.conf
+
+# enable mouse
+set -g mouse on
+
+# Fade background pane:
+#set -g window-style 'fg=default,bg=default'
+#set -g window-active-style 'fg=default,bg=default'
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-battery'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'

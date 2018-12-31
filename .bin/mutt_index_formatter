@@ -1,0 +1,15 @@
+#!/bin/sh
+
+NR=$1
+
+if [[ $NR =~ "*" ]]; then
+  echo "→ %D  %?M?(%M)&   ? %-22.22F  %s%"
+else
+  echo "%D  %?M?(%M)&   ? %-22.22F  %s%"
+fi
+
+#if [ $NR -lt 2 ]; then
+  #echo " %D  %-20.20F %s %"
+#else
+  #echo " %D  %-20F (%E) %s %"
+#fi

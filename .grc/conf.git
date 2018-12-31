@@ -1,0 +1,39 @@
+# modified
+regexp=modified:
+colours=bold green
+count=more
+======
+# new file
+regexp=new file:
+colours=bold green
+count=more
+=====
+# deleted
+regexp=deleted
+colours=bold red
+count=more
+=====
+# 
+regexp=#
+colours=yellow
+count=more
+=====
+# bullshit
+regexp=On branch master
+colours=white
+count=more
+=====
+# bullshit
+regexp=Changes not staged for commit:
+colours=underline
+count=more
+=====
+# bullshit
+regexp=Untracked files:
+colours=underline
+count=more
+=====
+# bullshit
+regexp=Changes to be committed:
+colours=underline
+count=more

@@ -1,0 +1,11 @@
+.DS_Store
+.vim/bundle-bk
+.vim/.netrwhist
+.vim/swaps
+.vim/undo
+.vim/backups
+.vim/view
+.vim/bundle
+.sass-cache/
+.vagrant/
+node_modules/

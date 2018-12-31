@@ -1,0 +1,102 @@
+# Account Settings -----------------------------------
+set from      = "m.steedman@thecharlesnyc.com"
+set realname  = "Matthew Steedman"
+
+set imap_user = "m.steedman@thecharlesnyc.com"
+set imap_pass = "**********"
+
+set smtp_url  = "smtp://m.steedman@thecharlesnyc.com@smtp.gmail.com:587/"
+set smtp_pass = "**********"
+
+# Paths ----------------------------------------------
+# Specifies the default location of your mailboxes. A + or = at the beginning
+# of a pathname will be expanded to the value of this variable. Note that if
+# you change this variable (from the default) value you need to make sure
+# that the assignment occurs before you use + or = for any other variables
+# since expansion takes place when handling the mailboxes command.
+set folder           = "imaps://imap.gmail.com:993/"
+#set trash            = "imaps://imap.gmail.com/[Gmail]/Trash"
+set spoolfile        = "+INBOX"
+set postponed        = "+[Gmail]/Drafts"
+set header_cache     = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+
+
+# Basic Options --------------------------------------
+set timeout = 3    # idle time before scanning
+set mail_check = 0 # minimum time between scans
+set beep_new       # bell on new mail
+set move = no
+
+
+# Pager View Options ---------------------------------
+set pager_index_lines = 10 # number of index lines to show
+unset markers
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+color header brightdefault default "^(Subject)"
+color body white default "Sent from my iPhone"
+ignore x-mailer
+set pager_format = "(%F) %s %|─"
+
+# Index View Options ---------------------------------
+set date_format = "%m/%d"
+#set index_format = " %D  %-20.20F (%M)  %s"
+set index_format = "mutt_index_formatter %Z |"
+#set index_format = "%?X?(%X)&   ? %-22.22F  %.100s %> %5c%"
+#set index_format = "%D  %?M?(%M)&   ? %-22.22F  %.100s %> %5c"
+#set index_format = "%D  %?M?(%M)&   ? %-22.22F  %s"
+set sort = threads
+set sort_aux = reverse-last-date-received # newest first
+set uncollapse_jump # don't collapse on an unread message
+set sort_re # thread based on regex
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+
+# Status Bar -----------------------------------------
+set status_format = " %f (%u)%|─"
+
+# Sidebar Patch --------------------------------------
+set sidebar_width = 34
+set sidebar_visible = no
+set sidebar_delim = '|'
+set sidebar_format = "   %B (%N) "
+#mailboxes =INBOX =Agenda =Wall\ Street\ Journal =[Gmail]/All\ Mail =[Gmail]/Drafts =[Gmail]/Sent\ Mail =[Gmail]/Spam =[Gmail]/Starred =[Gmail]/Trash
+macro index b "<enter-command>toggle sidebar_visible<enter>"
+macro pager b "<enter-command>toggle sidebar_visible<enter>"
+set sidebar_folderindent = yes
+
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+
+# Index Key Bindings ---------------------------------
+bind index        <Return> collapse-thread
+bind index        o        display-message
+bind index        gg       first-entry
+bind index        G        last-entry
+bind index,pager  a        delete-message # Archives message
+bind index,pager  A        delete-thread # Archives message
+macro index,pager d        "<save-message>=[Gmail]/Trash<enter><enter><collapse-all>" "Trash Message"
+
+# Pager Key Bindings ---------------------------------
+bind pager k  previous-line
+bind pager j  next-line
+bind pager gg top
+bind pager G  bottom
+
+bind pager R  group-reply
+
+
+# Colors ---------------------------------------------
+color normal    default       default
+color indicator default       magenta
+color index     brightdefault default "~U" # unread
+color index     white         default "~D" # deleted
+#color index     default       white   "~T" # tagged
+color index     white         default "[:digit:]+K" # deleted
+color tree      white         default
+color status    white         default
+
+# Hooks ----------------------------------------------
+folder-hook . "exec collapse-all" # Collapse all threads

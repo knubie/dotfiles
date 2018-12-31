@@ -1,0 +1,158 @@
+set -gx PATH $HOME/.bin $HOME/Library/Haskell/bin /usr/local/bin $HOME/.rbenv/bin $HOME/.rbenv/shims /usr/local/share/npm/bin /usr/local/heroku/bin $PATH
+
+#set -gx EDITOR mvim -v
+set -gx EDITOR vim
+set -gx DOCKER_TLS_VERIFY 1
+set -gx DOCKER_HOST tcp://192.168.59.103:2376
+set -gx DOCKER_CERT_PATH /Users/matthewsteedman/.boot2docker/certs/boot2docker-vm
+
+# Pretty ls colors
+set -x LSCOLORS Axhxaxaxaxaxaxaxaxaxax
+
+# More pretty colors
+set fish_color_command -o black
+set fish_color_param black
+set fish_color_quote -o cyan
+set fish_pager_color_prefix white
+set fish_pager_color_completion cyan
+set fish_color_autosuggestion white
+
+rbenv rehash >/dev/null ^&1
+
+# Set up docker machine
+if test (docker-machine ls | grep Running)
+  eval (docker-machine env default)
+end
+
+function git
+  if test $argv[1] = "status"
+    command git $argv | grcat conf.git
+  else if test $argv[1] = "push"
+    command git $argv --progress 2>&1 | grcat conf.gitpush
+  else
+    command git $argv
+  end
+end
+
+# -F show special character like '/' and '@'
+# -G use colors
+# 1 show one column
+# a show invisibles
+alias ls 'ls -FG1a'
+
+#function cat
+  #command cat $argv | vimcat
+#end
+
+complete -c git -a 'graph' -d 'Show commit history'
+complete -c git -a 'amend' -d 'Amend previous commit'
+complete -c git -a 'count' -d 'Show commit count by user'
+
+alias attach 'tmux attach -t'
+complete -c attach -x -a '(tmux list-sessions -F "#S")' -d 'Session'
+
+alias ... ../..
+
+set fish_cursor_default block
+set fish_cursor_normal block
+set fish_cursor_insert line
+set fish_cursor_visual block
+
+function fish_vi_cursor_handle --on-variable fish_bind_mode
+  set -l varname fish_cursor_$fish_bind_mode
+  if not set -q $varname
+    set varname fish_cursor_unknown
+  end
+  __fish_cursor_xterm $$varname
+  #$fcn \$\$varname
+  #$tmux_postfix
+end
+
+function fish_user_key_bindings
+  fish_vi_key_bindings
+  bind -M insert -m default jj backward-char force-repaint
+end
+
+set fish_key_bindings fish_user_key_bindings
+
+# The fish_mode_prompt function is prepended to the prompt
+function fish_mode_prompt --description "Displays the current mode"
+  # Do nothing if not in vi mode
+  if set -q __fish_vi_mode
+    switch $fish_bind_mode
+      case default
+        set_color --bold black
+        echo '[N]'
+      case insert
+        set_color --bold white
+        echo '[I]'
+      case replace-one
+        set_color --bold white
+        echo '[R]'
+      case visual
+        set_color --bold white
+        echo '[V]'
+    end
+    set_color normal
+    echo -n ' '
+  end
+end
+
+# Amazing prompt
+function fish_prompt
+  set -l git_branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+	if test -n "$git_branch"
+	else
+		set -l tag (command git describe --exact-match ^/dev/null)
+		if test -n "$tag"
+			set git_branch "$tag"
+		else
+			set git_branch (command git rev-parse --short HEAD ^/dev/null)
+		end
+	end
+  set -l git_status (command git status 2>/dev/null | tail -n 1)
+
+  #set_color magenta
+  #for i in (seq $COLUMNS)[2..-1]
+    #echo -n '─'
+  #end
+  #echo ''
+  ##printf "\n"
+  if test -n "$TMUX" #If inside tmux
+	else
+		set_color -o cyan
+		echo -n (pwd|sed "s=$HOME=~=")
+
+		if test -n "$git_status"
+			set_color normal
+			echo -n " on "
+			if test "$git_status" = "nothing to commit, working directory clean"
+				# Clean
+				set_color -o white
+				echo -n $git_branch
+			else
+				# Dirty
+				set_color -o black
+				echo -n $git_branch
+			end
+		end
+	end
+
+  set_color -o white
+  echo -n " ∴ "
+end
+
+set fish_greeting ""
+
+function tmux_pwd --on-event fish_prompt
+  if test -n "$TMUX"
+    tmux setenv TMUXPWD_(command tmux display -p "#I") "$PWD"
+    bash tmux_set_status.sh
+  end
+end
+
+function set_npm_bin_path --on-event fish_prompt
+  if test -d (npm bin)
+    set PATH (npm bin) $PATH
+  end
+end

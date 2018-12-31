@@ -1,0 +1,59 @@
+############## Writer Version #################
+
+# Variables
+set diff-context = 2
+
+# main view
+set main-view = date:display=relative author:abbreviated id:display=yes commit-title:graph=true,refs=yes
+#set ref:display=true
+
+# Colors
+color cursor default magenta
+color status default default
+color title-focus white default
+color title-blur white default
+color date white default
+color graph-commit white default
+color palette-0 white default
+color palette-1 white default
+color palette-2 white default
+color palette-3 white default
+color palette-4 white default
+color palette-5 white default
+color palette-6 white default
+color main-head default default bold
+color main-remote default default bold
+
+# status view
+color status.header white default
+color status.section default default underline
+color stat-unstaged default default bold
+
+color diff-header default white #Header for file
+color diff-chunk default default #Header for chunks in file
+color diff-add default default bold
+color diff-del white default
+
+color diff-index         default default
+#color ".|"               yellow default
+color diff-stat          default default bold
+color diff-similarity		 blue default
+#color dissimilarity			 blue default
+#color diff-tree					 blue default
+#color deleted file mode  blue default
+
+color Author black default
+color Commit white default
+color pp-merge  white default
+#color Date:   white default
+color author black default
+color main-commit blue default
+color pp-refs   white default
+
+color commit white default
+
+# Custom bindings
+bind status D !rm %(file)
+bind status V !vim %(file)
+
+bind main r !git reset %(commit)

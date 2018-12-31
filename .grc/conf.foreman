@@ -1,0 +1,13 @@
+#Time
+regexp=\d{2}:\d{2}:\d{2}
+colours=white
+======
+#Proc
+regexp=\w+\.\d{1}
+colours=bold black
+count=more
+======
+#Line
+regexp=\s{1}\|\s{1}
+colours=white
+count=more

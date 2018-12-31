@@ -1,0 +1,79 @@
+########## BASE 16 Version ###################
+
+# ------------------------------------------------------------------------
+# COLOR/NORMAL                    | BRIGHT/BOLD
+# ------------------------------------------------------------------------
+# TERM     CTERM          BASE16  |  TERM           CTERM         BASE16
+# ------------------------------------------------------------------------
+# Black    0 Black        base00  |  Bright Black    8  DarkGrey  base03
+# Red      1 DarkRed      base08  |  Bright Red      9  Red       base09
+# Green    2 DarkGreen    base0B  |  Bright Green    10 Green     base01
+# Yellow   3 Brown        base0A  |  Bright Yellow   11 Yellow    base02
+# Blue     4 DarkBlue     base0D  |  Bright Blue     12 Blue      base04
+# Magenta  5 DarkMagenta  base0E  |  Bright Magenta  13 Magenta   base06
+# Cyan     6 DarkCyan     base0C  |  Bright Cyan     14 Cyan      base0F
+# White    7 Grey         base05  |  Bright White    15 White     base07
+# ------------------------------------------------------------------------
+
+# disable importing colors from git config
+# (breaks main-ref coloring, probably others)
+set git-colors = no
+
+# Variables
+set diff-context = 2
+
+# main view
+set main-view = date:display=relative author:abbreviated id:display=yes commit-title:graph=true,refs=yes
+#set ref:display=true
+
+# Colors
+# color [thing] fg bg attr
+color cursor default 10 bold
+color status default default
+color title-focus white default
+color title-blur white default
+color date white default
+color graph-commit white default
+color palette-0 white default
+color palette-1 white default
+color palette-2 white default
+color palette-3 white default
+color palette-4 white default
+color palette-5 white default
+color palette-6 white default
+color main-head default default bold
+color main-remote default default bold
+
+# status view
+color status.header white default
+color status.section default default underline
+color stat-unstaged default default bold
+
+color diff-header default white #Header for file
+color diff-chunk default 8 #Header for chunks in file
+color diff-add green default
+color diff-del red default
+
+color diff-index         default default
+#color ".|"               yellow default
+color diff-stat          default default bold
+color diff-similarity		 blue default
+#color dissimilarity			 blue default
+#color diff-tree					 blue default
+#color deleted file mode  blue default
+
+color Author black default
+color Commit white default
+color pp-merge  white default
+#color Date:   white default
+color author black default
+color main-commit blue default
+color pp-refs   white default
+
+color commit white default
+
+# Custom bindings
+bind status D !rm %(file)
+bind status V !vim %(file)
+
+bind main r !git reset %(commit)
